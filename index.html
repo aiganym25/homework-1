@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="smart-phone">
+        <div class="speaker-camera">
+            <div class="camera"></div>
+            <div class="speaker"></div>
+        </div>
+        <div class="button"></div>
+        <div class="screen">
+
+
+            <div class="container">
+                <div class="top-content">
+
+                    <div class="left">
+                        <div class = "circles">
+                            <div class="circle"></div>
+                            <div class="circle"></div>
+                            <div class="circle"></div>
+                            <div class="circle"></div>
+                            <div class="circle"></div>
+                        </div>
+                        <h12 class = "txt">SingTel</h12>
+                        <i class="fa fa-wifi" style="font-size:15px;color:white"></i>
+                    </div>
+                    <div class="right">
+                        <i class="fa fa-battery-full" style="font-size:20px;color:white"></i>
+                    </div>
+
+                </div>
+                <div class="content">
+                    <p id="clock"></p>
+                    <p id="date"></p>
+                </div>
+                <p id="slide-to-unclock"> > slide to unlock</p>
+                <i id='icon-camera' class="fa fa-camera" style="font-size:24px;color: rgb(67, 64, 64)"></i>
+            </div>
+        </div>
+        <div class="volume">
+            <div class="volume high"></div>
+            <div class="volume low"></div>
+        </div>
+        <div class="power"></div>
+    </div>
+
+    <script>
+        function getTime() {
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            // console.log(hours);
+            // console.log(minutes);
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            var time = hours + ":" + minutes;
+            document.getElementById("clock").innerHTML = time;
+            setTimeout(getTime, 1000);
+        }
+
+        function getDate() {
+            var today = new Date();
+            var dayOfWeeks = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var date = dayOfWeeks[today.getDay()] + ', ' + today.getDate() + ' ' + months[today.getMonth()];
+
+            document.getElementById("date").innerHTML = date;
+        }
+
+        getTime();
+        getDate();
+    </script>
+
+
+
+
+
+
+
+
+</body>
+
+</html>
