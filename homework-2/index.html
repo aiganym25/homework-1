@@ -14,7 +14,8 @@
         Tap to enable the sound.
     </button>
     <p>
-        Since web browsers are moving towards stricter autoplay policies, please tab the button to enable autoplay mode for the sound.
+        Since web browsers are moving towards stricter autoplay policies, please tab the button to enable autoplay mode
+        for the sound.
     </p>
 
     <div class="container">
@@ -37,9 +38,10 @@
         var sound = document.getElementById("sound");
 
         let hitCount = 0;
+        let hitCount2 = 0;
         function hitLogo() {
             hitCount++;
-            // console.log(hitCount);
+            console.log(hitCount);
             if (hitCount % 2 == 0) {
                 logo1.style.backgroundColor = 'green';
 
@@ -53,16 +55,16 @@
         }
 
         function hitLogo2() {
-            hitCount++;
+            hitCount2++;
             // console.log(hitCount);
-            if (hitCount % 2 == 0) {
+            if (hitCount2 % 2 == 0) {
                 logo2.style.backgroundColor = 'yellow';
 
             } else {
                 logo2.style.backgroundColor = 'white';
             }
             setTimeout(() => {
-                hitLogo();
+                hitLogo2();
                 sound.play();
             }, 5000);
         }

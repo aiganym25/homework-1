@@ -24,7 +24,6 @@ p {
 
 #dvd-logo-2 {
     position: absolute;
-    background-color: brown;
     animation: move-logo-2 10s infinite;
     animation-timing-function: ease-in-out;
 }
@@ -52,6 +51,7 @@ p {
 
     100% {
         transform: translate(-50%, -50%) translateX(-325px) rotate(360deg);
+        
     }
 }
 
