@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <button>
+        Tap to enable the sound.
+    </button>
+    <p>
+        Since web browsers are moving towards stricter autoplay policies, please tab the button to enable autoplay mode
+        for the sound.
+    </p>
+
+    <div class="container">
+        <div id="dvd-logo-1">
+            <img src="dvd_logo.png" alt="DVD logo">
+        </div>
+        <div id="dvd-logo-2">
+            <img src="dvd_logo.png" alt="DVD logo">
+        </div>
+    </div>
+
+    <audio id="sound" autoplay>
+        <source src="sound.mp3">
+    </audio>
+
+    <!-- Play the sound effect when the logo bounces off the edge -->
+    <script>
+        var logo1 = document.getElementById("dvd-logo-1");
+        var logo2 = document.getElementById("dvd-logo-2");
+        var sound = document.getElementById("sound");
+
+        let hitCount = 0;
+        let hitCount2 = 0;
+        function hitLogo() {
+            hitCount++;
+            console.log(hitCount);
+            if (hitCount % 2 == 0) {
+                logo1.style.backgroundColor = 'green';
+
+            } else {
+                logo1.style.backgroundColor = 'red';
+            }
+            setTimeout(() => {
+                hitLogo();
+                sound.play();
+            }, 2500);
+        }
+
+        function hitLogo2() {
+            hitCount2++;
+            // console.log(hitCount);
+            if (hitCount2 % 2 == 0) {
+                logo2.style.backgroundColor = 'yellow';
+
+            } else {
+                logo2.style.backgroundColor = 'white';
+            }
+            setTimeout(() => {
+                hitLogo2();
+                sound.play();
+            }, 5000);
+        }
+        hitLogo();
+        hitLogo2();
+
+
+    </script>
+</body>
+
+</html>
