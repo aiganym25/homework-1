@@ -1,0 +1,41 @@
+body {
+    background: white;
+    text-align: center;
+    font-family: 'Comfortaa', cursive;
+}
+
+svg {
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+}
+
+#minutes {
+    transform-origin: 50% 50%;
+    animation: rotate-minutes 5s linear infinite;
+}
+
+#hours {
+    transform-origin: 50% 50%;
+    animation: rotate-hours 40s linear infinite;
+}
+
+@keyframes rotate-minutes {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes rotate-hours {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
