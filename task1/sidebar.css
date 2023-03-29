@@ -94,10 +94,3 @@
 .sidebar-bottom__content div {
     width: 80px;
 }
-
-@media only screen and (max-width: 480px) {
-    .sidebar{
-        display: none;
-    }
-
-}

@@ -90,9 +90,13 @@
     /* identical to box height, or 157% */
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 768px) {
     .header {
         display: none;
+    }
+
+    .header-mobile{
+        display: flex;
     }
 
     .search-bar {
@@ -106,6 +110,10 @@
         background: #FFFFFF;
         border: 1px solid #EAECF0;
         border-radius: 6px;
+    }
+
+    .content{
+        z-index: 1;
     }
 
 }
