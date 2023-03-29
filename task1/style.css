@@ -69,9 +69,15 @@ body {
     border-radius: 39px;
 }
 
-.button-upgrade embed {
-    margin-right: 8px;
+.button-upgrade--white {
+    display: flex;
+    margin-right: 6px;
 }
+
+.button-upgrade--mobile {
+    display: none;
+}
+
 
 table {
     /* padding: 0px 0px 24px; */
@@ -429,7 +435,7 @@ tr {
         display: none;
     }
 
-    body{
+    body {
         padding-left: 16px;
         padding-right: 16px;
         padding-top: 140px;
@@ -455,6 +461,15 @@ tr {
 
     .button-upgrade {
         margin-top: 20px;
+    }
+
+    .button-upgrade--white {
+        display: none;
+    }
+
+    .button-upgrade--mobile {
+        display: flex;
+        margin-right: 6px;
     }
 
 
