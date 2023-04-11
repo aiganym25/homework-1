@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:wght@400;500;600;700;800;900&display=swap");
+body,
+html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* font-family: "Inter", sans-serif; */
+  font-family: "Nunito";
+}
+
+.container {
+  padding: 3rem 0;
+}
+
+header {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 36px;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  padding: 44px 0 42px 0;
+}
+.input {
+  width: 100%;
+  padding: 16px 21px;
+  margin-right: 40px;
+  border-radius: 12px;
+  border: 1px solid #d2d2d2;
+  font-size: 16px;
+  font-weight: 500;
+  color: #838383;
+  background: #f5f5f5;
+  /* position: fixed; */
+}
+
+.checkbox {
+  margin-right: 20px;
+  width: 21px;
+  height: 21px;
+  color: #d3d3d3; /* default color */
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Modal Content/Box */
+.modal__content {
+  position: relative;
+  margin: 5rem;
+  /* padding: 24px 27px; */
+  background-color: #fefefe;
+  border-radius: 24px;
+  border: 1px solid #888;
+  height: 350px;
+}
+
+.modal__content__header {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.modal__content__task-input {
+  width: 85%;
+  margin: 38px 27px ;
+  /* margin: 38px 27px 0 27px; */
+  padding: 16px 21px;
+  border-radius: 12px;
+  border: 1px solid #d2d2d2;
+  font-size: 16px;
+  font-weight: 500;
+  color: #838383;
+  background: #f5f5f5;
+  position: absolute;
+}
+
+.btn {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 20px;
+  height: 52px;
+  padding: 16px 0;
+  border-radius: 12px;
+  position: absolute;
+  bottom: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn--cancel {
+  right: calc(50% + 5px);
+  left: 0;
+  background-color: #fefefe;
+  color: #0053cf;
+  margin-left: 27px;
+}
+
+.btn--add-task {
+  left: calc(50% + 5px);
+  right: 0;
+  color: #ffffff;
+  background-color: #d3d3d3;
+  margin-right: 27px;
+}
