@@ -22,6 +22,42 @@ header {
   justify-content: space-between;
   padding: 44px 0 42px 0;
 }
+
+.checkbox {
+  margin-right: 20px;
+  width: 21px;
+  height: 21px;
+  cursor: pointer;
+}
+span {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: Nunito;
+}
+
+.delete {
+  margin-left: auto;
+  cursor: pointer;
+}
+
+#all-tasks, #completed-tasks {
+  width: 40%;
+  /* margin-bottom: 32px; */
+}
+.tasks__header{
+  font-size: 24px;
+  font-weight: 700;
+  font-family: Nunito;
+  line-height: 32px;
+  padding-bottom: 16px;
+}
+.task__list {
+  list-style-type: none;
+  font-weight: 400;
+  font-family: Nunito;
+}
+
+
 .input {
   width: 100%;
   padding: 16px 21px;
@@ -74,7 +110,7 @@ header {
 
 .modal__content__task-input {
   width: 85%;
-  margin: 38px 27px ;
+  margin: 38px 27px;
   /* margin: 38px 27px 0 27px; */
   padding: 16px 21px;
   border-radius: 12px;

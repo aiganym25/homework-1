@@ -1,4 +1,8 @@
 (function () {
+  let allTasks = [];
+  let completedTasks = [];
+  let searchTerm = "";
+
   let state = undefined;
 
   /**
@@ -20,63 +24,100 @@
 
   /**
    * Functional component for the list
-   * @param items {string[]}
+   * @param searchTerm {string}
+   * @param allTasks {Array}
+   * @param onCompleteTask {function}
+   * @param onDeleteTask {function}
    * @returns {HTMLElement} - List element
    */
-  function AllTasks({ items }) {
-    const listContent = document.createElement("div");
-    listContent.style.width = "40%";
-    listContent.style.marginBottom = "32px";
+  function AllTasks({ allTasks, searchTerm, onCompleteTask, onDeleteTask }) {
+    const allTasksComponent = document.createElement("div");
+
     // ---------- TITLE -----------------------
     const title = document.createElement("div");
+    title.classList.add("tasks__header");
     title.textContent = "All Tasks";
-    title.style.cssText =
-      "font-size: 24px; font-weight: 700; font-family: Nunito; line-height: 32px;padding-bottom: 16px";
 
     // ----------List ----------------------
-    listContent.append(title);
-    const listItems = items.map((item) => `<li>${item}</li>`).join("");
-    const ul = document.createElement("ul");
-    ul.innerHTML = listItems;
-    ul.style.cssText =
-      "list-style-type: none; font-weight: 400; font-family: Nunito";
+    allTasksComponent.append(title);
 
-    // ----------List tile ----------------------
+    const list = document.createElement("ul");
+    list.classList.add("task__list");
 
-    ul.innerHTML = items
-      .map(
-        (item, index) => `
-      <li style = "margin-bottom: 12px">
-        <div style="display: flex">
-            <input type="checkbox" class = "checkbox" id="checkbox-${index}" style="margin-right: 20px; width: 21px; height: 21px">
-            <span style = "font-size: 18px; font-weight: 400; font-family: Nunito; color: #1D1D1D">${item}</span>
-            <img src = './assets/bin.svg' class = "delete" alt = 'svg' style="margin-left: auto"/>
-        </div>
-      </li>
-    `
-      )
-      .join("");
+    const filteredTasks = allTasks.filter(
+      (taskTitle) =>
+        !searchTerm ||
+        (taskTitle &&
+          taskTitle.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
 
-    listContent.append(ul);
+    filteredTasks.forEach((taskTitle, index) => {
+      const listItem = document.createElement("li");
 
-    return listContent;
+      const div = document.createElement("div");
+      div.style.display = "flex";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = false;
+      checkbox.id = `checkbox-${index}`;
+      checkbox.classList.add("checkbox");
+
+      const listItemTitle = document.createElement("span");
+      listItemTitle.textContent = taskTitle;
+
+      const deleteSvg = document.createElement("img");
+      deleteSvg.src = "./assets/bin.svg";
+      deleteSvg.classList.add("delete");
+      deleteSvg.alt = "delete svg";
+
+      deleteSvg.addEventListener("click", () => {
+        onDeleteTask(listItemTitle.textContent);
+      });
+
+      checkbox.addEventListener("click", () => {
+        onCompleteTask(listItemTitle.textContent);
+      });
+
+      div.append(checkbox, listItemTitle, deleteSvg);
+
+      listItem.append(div);
+      list.append(listItem);
+    });
+
+    allTasksComponent.append(list);
+    return allTasksComponent;
   }
 
-  function CompletedTasks({ items }) {
+  /**
+   * Functional component for the list
+   * @param completedTasks {Array}
+   * @param searchTerm {string}
+   * @param onClick {function}
+   * @returns {HTMLElement} - List element
+   */
+
+  function CompletedTasks({ completedTasks, searchTerm, onClick }) {
     const listContent = document.createElement("div");
-    listContent.style.width = "40%";
+
     const title = document.createElement("div");
+    title.classList.add("tasks__header");
     title.textContent = "Completed Tasks";
-    title.style.cssText =
-      "font-size: 24px; font-weight: 700; font-family: Nunito; line-height: 32px;padding-bottom: 16px";
 
     listContent.append(title);
-    const ul = document.createElement("ul");
-    ul.style.listStyleType = "none";
+    const list = document.createElement("ul");
+    list.classList.add("task__list");
 
-    items.forEach((item, index) => {
-      const li = document.createElement("li");
-      li.style.marginBottom = "12px";
+    const filteredTasks = completedTasks.filter(
+      (taskTitle) =>
+        !searchTerm ||
+        (taskTitle &&
+          taskTitle.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    filteredTasks.forEach((item, index) => {
+      const listItem = document.createElement("li");
+
       const div = document.createElement("div");
       div.style.display = "flex";
 
@@ -85,21 +126,21 @@
       checkbox.checked = true;
       checkbox.id = `checkbox-${index}`;
       checkbox.classList.add("checkbox"); // Add CSS class to apply styles
-      div.appendChild(checkbox);
 
-      const completedTask = document.createElement("span");
-      completedTask.textContent = item;
+      const listItemTitle = document.createElement("span");
+      listItemTitle.textContent = item;
 
-      completedTask.style.cssText =
-        "font-size: 18px; font-weight: 400; font-family: Nunito";
+      checkbox.addEventListener("click", () => {
+        onClick(listItemTitle.textContent);
+      });
 
-      div.appendChild(completedTask);
+      div.append(checkbox, listItemTitle);
 
-      li.appendChild(div);
-      ul.appendChild(li);
+      listItem.appendChild(div);
+      list.appendChild(listItem);
     });
 
-    listContent.append(ul);
+    listContent.append(list);
     return listContent;
   }
 
@@ -114,11 +155,11 @@
     button.innerHTML = text;
     button.onclick = onClick;
     button.style.cssText =
-      "background-color: rgba(60, 134, 244, 0.15); padding: 16px 32px; border: none; font-size: 16px; font-weight: 800; color: #0053CF; height: 52px; white-space: nowrap; border-radius: 12px";
+      "cursor: pointer; background-color: rgba(60, 134, 244, 0.15); padding: 16px 32px; border: none; font-size: 16px; font-weight: 800; color: #0053CF; height: 52px; white-space: nowrap; border-radius: 12px";
     return button;
   }
 
-  function ModalForm({ text }) {
+  function ModalForm({ text, onAddTask }) {
     const modal = document.createElement("div");
     modal.classList.add("modal");
     const modalContent = document.createElement("div");
@@ -138,13 +179,36 @@
     div.classList.add("flex");
 
     const cancelButton = document.createElement("button");
+    // cancelButton.name = "cancel";
     cancelButton.classList.add("btn", "btn--cancel");
 
     cancelButton.textContent = "Cancel";
 
+    // event listener to cancelButton
+    cancelButton.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
     const addButton = document.createElement("button");
     addButton.classList.add("btn", "btn--add-task");
     addButton.textContent = "Add task";
+
+    input.addEventListener("input", () => {
+      if (input.value.trim() !== "") {
+        input.style.color = "#000";
+        addButton.style.backgroundColor = "#3C86F4";
+      } else {
+        addButton.style.backgroundColor = "#D3D3D3";
+      }
+    });
+    // --------- ADD NEW TASK -----------
+    addButton.addEventListener("click", (e) => {
+      const taskTitle = input.value.trim();
+      if (taskTitle !== "") {
+        onAddTask(input.value.trim());
+      }
+    });
+
     div.append(cancelButton, addButton);
 
     modalContent.append(title, input, div);
@@ -153,11 +217,13 @@
     return modal;
   }
 
-  function InputTextEditor({ text }) {
+  function InputTextEditor({ text, onChange }) {
     const input = document.createElement("input");
     input.classList.add("input");
     input.setAttribute("type", "text");
     input.placeholder = text;
+
+ 
     return input;
   }
 
@@ -166,32 +232,6 @@
    * @returns {HTMLDivElement} - The app container
    */
   function App() {
-    const [items, setItems] = useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
-
-    function addItem() {
-      setItems([...items, `Item ${items.length + 1}`]);
-    }
-
-    function showModal() {
-      const modal = ModalForm({ text: "Add New Task" });
-      modal.style.display = "block";
-      container.append(modal);
-      //   console.log(modal.classList);
-    }
-
-
-    function handleSearch(event) {
-      //   const term = event.target.value;
-      //   setSearchTerm(term);
-      //   // Filter the items based on search term
-      //   const results = items.filter((item) =>
-      //     item.toLowerCase().includes(term.toLowerCase())
-      //   );
-      //   setSearchResults(results);
-    }
-
     const container = document.createElement("div");
     container.classList.add("container");
 
@@ -200,38 +240,93 @@
     title.textContent = "To Do List";
     container.append(title);
 
-    // --------------- SEARCH  AND NEW TASK --------------------
+    // --------------- SEARCH  --------------------
     const div = document.createElement("div");
     div.classList.add("flex");
 
-    const addNewTaskButton = Button({ text: "+ New Task", onClick: showModal });
+    const searchInput = InputTextEditor({
+      text: "Search Task",
+    });
 
-    const search = InputTextEditor({ text: "Search Task" });
+    searchInput.addEventListener("input", () => {
+      let searchText = searchInput.value.trim();
+      if (searchText !== "") {
+        searchTerm = searchText.toLowerCase();
+        renderTasks(allTasks);
+        renderCompletedTasks(completedTasks);
+      }
+    });
+    // --------------- ADD NEW TASK --------------------
 
-    div.append(search, addNewTaskButton);
+    const addNewTaskButton = Button({
+      text: "+ New Task",
+      onClick: () => {
+        const modal = ModalForm({
+          text: "Add New Task",
+          onAddTask: (newTask) => {
+            allTasks = [...allTasks, newTask];
+            renderApp();
+          },
+        });
+        modal.style.display = "block";
+        container.append(modal);
+      },
+    });
+
+    div.append(searchInput, addNewTaskButton);
     container.append(div);
 
-    // --------------- List --------------------
-    const allTasks = AllTasks({ items: searchTerm ? searchResults : items });
-    const completedList = CompletedTasks({
-      items: searchTerm ? searchResults : items,
-    });
+    container.append(renderTasks(allTasks));
+    container.append(renderCompletedTasks(completedTasks));
 
-    // new task
-    // remove the task
-    allTasks.addEventListener("click", (e) => {
-      if (e.target.classList.contains("delete")) {
-        e.target.parentElement.remove();
-      }
-    });
-
-    // change the checkbox
-    allTasks.addEventListener("click", (e) => {
-      if (e.target.classList.contains("checkbox")) {
-      }
-    });
-    container.append(allTasks, completedList);
     return container;
+  }
+
+  function renderTasks(allTasks) {
+    const allTasksContainer = document.getElementById("all-tasks");
+    const allTasksComponent = AllTasks({
+      allTasks,
+      searchTerm,
+      onCompleteTask: (taskTitle) => {
+        const taskIndex = allTasks.findIndex((task) => task === taskTitle);
+        if (taskIndex !== -1) {
+          var newComplete = allTasks.splice(taskIndex, 1)[0];
+          completedTasks = [...completedTasks, newComplete];
+          renderApp();
+        }
+      },
+      onDeleteTask: (taskTitle) => {
+        const taskIndex = allTasks.findIndex((task) => task === taskTitle);
+        if (taskIndex !== -1) {
+          const completedTask = allTasks.splice(taskIndex, 1);
+          renderApp();
+        }
+      },
+    });
+    allTasksContainer.innerHTML = ""; // Clear the container
+    allTasksContainer.appendChild(allTasksComponent); // Append the updated component
+  }
+
+  function renderCompletedTasks(completedTasks) {
+    const completedTaskContainer = document.getElementById("completed-tasks");
+    const completedTaskComponent = CompletedTasks({
+      completedTasks,
+      searchTerm,
+      onClick: (taskTitle) => {
+        const taskIndex = completedTasks.findIndex(
+          (task) => task === taskTitle
+        );
+        if (taskIndex !== -1) {
+          console.log("onlick");
+          var uncompletedTask = completedTasks.splice(taskIndex, 1);
+          console.log(uncompletedTask);
+          allTasks = [...allTasks, uncompletedTask];
+          renderApp();
+        }
+      },
+    });
+    completedTaskContainer.innerHTML = "";
+    completedTaskContainer.appendChild(completedTaskComponent);
   }
 
   /**
@@ -248,3 +343,28 @@
   // initial render
   renderApp();
 })();
+
+function saveTasksToLocalStorage(tasks) {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// Function to retrieve tasks from local storage
+function getTasksFromLocalStorage() {
+  const tasks = localStorage.getItem("tasks");
+  return JSON.parse(tasks) || []; // Return empty array if no tasks found
+}
+
+function addTask() {
+  const taskTitle = taskInput.value;
+  if (taskTitle) {
+    const newTask = {
+      id: Date.now(),
+      title: taskTitle,
+      completed: false,
+    };
+    allTasks.push(newTask);
+    saveTasksToLocalStorage(allTasks); // Save tasks to local storage
+    renderAllTasks();
+    taskInput.value = "";
+  }
+}
