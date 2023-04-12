@@ -9,7 +9,8 @@ html {
 }
 
 .container {
-  padding: 3rem 0;
+  padding: 0 4rem;
+  margin: 2rem;
 }
 
 header {
@@ -24,11 +25,20 @@ header {
 }
 
 .checkbox {
-  margin-right: 20px;
   width: 21px;
   height: 21px;
   cursor: pointer;
+  border: 2px solid #d3d3d3;
+  border-radius: 4px;
 }
+.checkbox--checked {
+  background-image: url("assets/checked-checkbox.svg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-color: #d3d3d3;
+  background-position: center;
+}
+
 span {
   font-size: 18px;
   font-weight: 400;
@@ -40,23 +50,32 @@ span {
   cursor: pointer;
 }
 
-#all-tasks, #completed-tasks {
+#all-tasks,
+#completed-tasks {
   width: 40%;
   /* margin-bottom: 32px; */
 }
-.tasks__header{
+.tasks__header, .completed__header {
   font-size: 24px;
   font-weight: 700;
   font-family: Nunito;
   line-height: 32px;
   padding-bottom: 16px;
 }
-.task__list {
+.task__list, .completed__list {
   list-style-type: none;
   font-weight: 400;
   font-family: Nunito;
+  
 }
 
+.completed__list{
+  color: #838383;
+}
+
+.completed__list__item, .task__list__item {
+  margin-bottom: 28px;
+}
 
 .input {
   width: 100%;

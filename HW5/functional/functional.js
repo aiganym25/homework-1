@@ -7,7 +7,8 @@
     ? JSON.parse(localStorage.getItem("completed-tasks"))
     : [];
 
-  let searchTerm = "";
+  let filteredAllTasks = allTasks;
+  let filteredCompletedTasks = completedTasks;
 
   let state = undefined;
 
@@ -30,13 +31,12 @@
 
   /**
    * Functional component for the list
-   * @param searchTerm {string}
    * @param allTasks {Array}
    * @param onCompleteTask {function}
    * @param onDeleteTask {function}
    * @returns {HTMLElement} - List element
    */
-  function AllTasks({ allTasks, searchTerm, onCompleteTask, onDeleteTask }) {
+  function AllTasks({ allTasks, onCompleteTask, onDeleteTask }) {
     const allTasksComponent = document.createElement("div");
 
     // ---------- TITLE -----------------------
@@ -50,23 +50,14 @@
     const list = document.createElement("ul");
     list.classList.add("task__list");
 
-    const filteredTasks = allTasks.filter(
-      (taskTitle) =>
-        !searchTerm ||
-        (taskTitle &&
-          taskTitle.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-
-    filteredTasks.forEach((taskTitle, index) => {
+    filteredAllTasks.forEach((taskTitle, index) => {
       const listItem = document.createElement("li");
-
+      listItem.classList.add("task__list__item");
       const div = document.createElement("div");
       div.style.display = "flex";
 
-      const checkbox = document.createElement("input");
+      const checkbox = document.createElement("div");
       checkbox.type = "checkbox";
-      checkbox.checked = false;
-      checkbox.id = `checkbox-${index}`;
       checkbox.classList.add("checkbox");
 
       const listItemTitle = document.createElement("span");
@@ -99,40 +90,31 @@
   /**
    * Functional component for the list
    * @param completedTasks {Array}
-   * @param searchTerm {string}
    * @param onClick {function}
    * @returns {HTMLElement} - List element
    */
 
-  function CompletedTasks({ completedTasks, searchTerm, onClick }) {
+  function CompletedTasks({ completedTasks, onClick }) {
     const listContent = document.createElement("div");
 
     const title = document.createElement("div");
-    title.classList.add("tasks__header");
+    title.classList.add("completed__header");
     title.textContent = "Completed Tasks";
 
     listContent.append(title);
     const list = document.createElement("ul");
-    list.classList.add("task__list");
+    list.classList.add("completed__list");
 
-    const filteredTasks = completedTasks.filter(
-      (taskTitle) =>
-        !searchTerm ||
-        (taskTitle &&
-          taskTitle.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-
-    filteredTasks.forEach((item, index) => {
+    filteredCompletedTasks.forEach((item, index) => {
       const listItem = document.createElement("li");
+      listItem.classList.add("completed__list__item");
 
       const div = document.createElement("div");
       div.style.display = "flex";
 
       const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
       checkbox.checked = true;
-      checkbox.id = `checkbox-${index}`;
-      checkbox.classList.add("checkbox"); // Add CSS class to apply styles
+      checkbox.classList.add("checkbox", "checkbox--checked"); // Add CSS class to apply styles
 
       const listItemTitle = document.createElement("span");
       listItemTitle.textContent = item;
@@ -234,6 +216,24 @@
     input.setAttribute("type", "text");
     input.placeholder = text;
 
+    input.addEventListener("input", () => {
+      const searchText = input.value.trim();
+
+      if (searchText !== "") {
+        filteredAllTasks = allTasks.filter((taskTitle) =>
+          taskTitle.toLowerCase().includes(searchText.toLowerCase())
+        );
+        filteredCompletedTasks = completedTasks.filter((taskTitle) =>
+          taskTitle.toLowerCase().includes(searchText.toLowerCase())
+        );
+      } else {
+        filteredAllTasks = allTasks;
+        filteredCompletedTasks = completedTasks;
+      }
+      renderTasks();
+      renderCompletedTasks();
+    });
+
     return input;
   }
 
@@ -257,16 +257,7 @@
     const searchInput = InputTextEditor({
       text: "Search Task",
     });
-
-    searchInput.addEventListener("input", () => {
-      let searchText = searchInput.value.trim();
-      if (searchText !== "") {
-        searchTerm = searchText.toLowerCase();
-        renderTasks(allTasks);
-        renderCompletedTasks(completedTasks);
-      }
-    });
-    // --------------- ADD NEW TASK --------------------
+    // --------------- NEW TASK BUTTON --------------------
 
     const addNewTaskButton = Button({
       text: "+ New Task",
@@ -282,18 +273,18 @@
     div.append(searchInput, addNewTaskButton);
     container.append(div);
 
-    container.append(renderTasks(allTasks));
-    container.append(renderCompletedTasks(completedTasks));
+    container.append(renderTasks());
+    container.append(renderCompletedTasks());
 
     return container;
   }
 
   // RENDER all tasks
-  function renderTasks(allTasks) {
+  function renderTasks() {
     const allTasksContainer = document.getElementById("all-tasks");
+    allTasksContainer.innerHTML = "";
     const allTasksComponent = AllTasks({
       allTasks,
-      searchTerm,
       onCompleteTask: (taskTitle) => {
         const taskIndex = allTasks.findIndex((task) => task === taskTitle);
         if (taskIndex !== -1) {
@@ -317,24 +308,23 @@
         }
       },
     });
-    allTasksContainer.innerHTML = ""; // Clear the container
-    allTasksContainer.appendChild(allTasksComponent); // Append the updated component
+    allTasksContainer.append(allTasksComponent);
+    return allTasksContainer;
   }
 
   // render completed tasks
-  function renderCompletedTasks(completedTasks) {
+  function renderCompletedTasks() {
     const completedTaskContainer = document.getElementById("completed-tasks");
+    completedTaskContainer.innerHTML = "";
+
     const completedTaskComponent = CompletedTasks({
       completedTasks,
-      searchTerm,
       onClick: (taskTitle) => {
         const taskIndex = completedTasks.findIndex(
           (task) => task === taskTitle
         );
         if (taskIndex !== -1) {
-          console.log("onlick");
           var uncompletedTask = completedTasks.splice(taskIndex, 1)[0];
-          // allTasks = [...allTasks, uncompletedTask];
 
           allTasks.push(uncompletedTask);
           localStorage.setItem("tasks", JSON.stringify(allTasks));
@@ -346,8 +336,9 @@
         }
       },
     });
-    completedTaskContainer.innerHTML = "";
-    completedTaskContainer.appendChild(completedTaskComponent);
+    // return completedTaskComponent;
+    completedTaskContainer.append(completedTaskComponent);
+    return completedTaskContainer;
   }
 
   /**
@@ -361,9 +352,4 @@
     appContainer.append(App());
   }
   renderApp();
-
-  // const todosArray = localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : [];
-  console.log(allTasks);
-
-  console.log(completedTasks);
 })();
