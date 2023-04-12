@@ -1,6 +1,12 @@
 (function () {
-  let allTasks = [];
-  let completedTasks = [];
+  let allTasks = localStorage.getItem("tasks")
+    ? JSON.parse(localStorage.getItem("tasks"))
+    : [];
+
+  let completedTasks = localStorage.getItem("completed-tasks")
+    ? JSON.parse(localStorage.getItem("completed-tasks"))
+    : [];
+
   let searchTerm = "";
 
   let state = undefined;
@@ -64,6 +70,7 @@
       checkbox.classList.add("checkbox");
 
       const listItemTitle = document.createElement("span");
+      listItemTitle.id = "todo";
       listItemTitle.textContent = taskTitle;
 
       const deleteSvg = document.createElement("img");
@@ -159,7 +166,7 @@
     return button;
   }
 
-  function ModalForm({ text, onAddTask }) {
+  function ModalForm({ text }) {
     const modal = document.createElement("div");
     modal.classList.add("modal");
     const modalContent = document.createElement("div");
@@ -203,10 +210,14 @@
     });
     // --------- ADD NEW TASK -----------
     addButton.addEventListener("click", (e) => {
-      const taskTitle = input.value.trim();
-      if (taskTitle !== "") {
-        onAddTask(input.value.trim());
+      const task = input.value.trim();
+      if (task !== "") {
+        // onAddTask(task);
+        allTasks.push(task);
+        localStorage.setItem("tasks", JSON.stringify(allTasks));
+        location.reload();
       }
+      // saving in local storage
     });
 
     div.append(cancelButton, addButton);
@@ -223,7 +234,6 @@
     input.setAttribute("type", "text");
     input.placeholder = text;
 
- 
     return input;
   }
 
@@ -263,10 +273,6 @@
       onClick: () => {
         const modal = ModalForm({
           text: "Add New Task",
-          onAddTask: (newTask) => {
-            allTasks = [...allTasks, newTask];
-            renderApp();
-          },
         });
         modal.style.display = "block";
         container.append(modal);
@@ -282,6 +288,7 @@
     return container;
   }
 
+  // RENDER all tasks
   function renderTasks(allTasks) {
     const allTasksContainer = document.getElementById("all-tasks");
     const allTasksComponent = AllTasks({
@@ -291,15 +298,22 @@
         const taskIndex = allTasks.findIndex((task) => task === taskTitle);
         if (taskIndex !== -1) {
           var newComplete = allTasks.splice(taskIndex, 1)[0];
-          completedTasks = [...completedTasks, newComplete];
-          renderApp();
+
+          completedTasks.push(newComplete);
+          localStorage.setItem("tasks", JSON.stringify(allTasks));
+          localStorage.setItem(
+            "completed-tasks",
+            JSON.stringify(completedTasks)
+          );
+          location.reload();
         }
       },
       onDeleteTask: (taskTitle) => {
         const taskIndex = allTasks.findIndex((task) => task === taskTitle);
         if (taskIndex !== -1) {
-          const completedTask = allTasks.splice(taskIndex, 1);
-          renderApp();
+          allTasks.splice(taskIndex, 1);
+          localStorage.setItem("tasks", JSON.stringify(allTasks));
+          location.reload();
         }
       },
     });
@@ -307,6 +321,7 @@
     allTasksContainer.appendChild(allTasksComponent); // Append the updated component
   }
 
+  // render completed tasks
   function renderCompletedTasks(completedTasks) {
     const completedTaskContainer = document.getElementById("completed-tasks");
     const completedTaskComponent = CompletedTasks({
@@ -318,10 +333,16 @@
         );
         if (taskIndex !== -1) {
           console.log("onlick");
-          var uncompletedTask = completedTasks.splice(taskIndex, 1);
-          console.log(uncompletedTask);
-          allTasks = [...allTasks, uncompletedTask];
-          renderApp();
+          var uncompletedTask = completedTasks.splice(taskIndex, 1)[0];
+          // allTasks = [...allTasks, uncompletedTask];
+
+          allTasks.push(uncompletedTask);
+          localStorage.setItem("tasks", JSON.stringify(allTasks));
+          localStorage.setItem(
+            "completed-tasks",
+            JSON.stringify(completedTasks)
+          );
+          location.reload();
         }
       },
     });
@@ -339,32 +360,10 @@
 
     appContainer.append(App());
   }
-
-  // initial render
   renderApp();
+
+  // const todosArray = localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos")) : [];
+  console.log(allTasks);
+
+  console.log(completedTasks);
 })();
-
-function saveTasksToLocalStorage(tasks) {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-}
-
-// Function to retrieve tasks from local storage
-function getTasksFromLocalStorage() {
-  const tasks = localStorage.getItem("tasks");
-  return JSON.parse(tasks) || []; // Return empty array if no tasks found
-}
-
-function addTask() {
-  const taskTitle = taskInput.value;
-  if (taskTitle) {
-    const newTask = {
-      id: Date.now(),
-      title: taskTitle,
-      completed: false,
-    };
-    allTasks.push(newTask);
-    saveTasksToLocalStorage(allTasks); // Save tasks to local storage
-    renderAllTasks();
-    taskInput.value = "";
-  }
-}
