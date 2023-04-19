@@ -1,0 +1,46 @@
+{
+  "tasks": [
+    {
+      "title": "task 1",
+      "tag": "work",
+      "date": "2023-04-19",
+      "isCompleted": false,
+      "id": 1
+    },
+    {
+      "title": "task 2",
+      "tag": "health",
+      "date": "2023-04-18",
+      "isCompleted": false,
+      "id": 2
+    },
+    {
+      "title": "task 3",
+      "tag": "health",
+      "date": "2023-04-20",
+      "isCompleted": false,
+      "id": 3
+    },
+    {
+      "id": 4,
+      "title": "completed task 1",
+      "date": "2023-04-17",
+      "tag": "health",
+      "isCompleted": true
+    },
+    {
+      "id": 5,
+      "title": "completed task 2",
+      "date": "2023-04-18",
+      "tag": "home",
+      "isCompleted": true
+    },
+    {
+      "title": "task 2",
+      "tag": "other",
+      "date": "2023-04-19",
+      "isCompleted": false,
+      "id": 6
+    }
+  ]
+}
