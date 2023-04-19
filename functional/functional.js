@@ -21,7 +21,9 @@
   }
   function formatDate(dateString) {
     const date = new Date(dateString);
+    date.setUTCHours(0, 0, 0, 0);
     const now = new Date();
+    now.setUTCHours(0, 0, 0, 0);
 
     const oneDay = 24 * 60 * 60 * 1000;
     const diffInDays = Math.round((date - now) / oneDay);
@@ -49,7 +51,6 @@
       const weatherInfo = await response.json();
       return weatherInfo;
     } catch (er) {
-      console.log(er);
     }
   }
 
@@ -76,7 +77,6 @@
 
     fetchTodoTasks().then((tasks) =>
       tasks.forEach((task) => {
-        // console.log(task);
         const listItem = document.createElement("li");
         listItem.classList.add("task__list__item");
         const div = document.createElement("div");
@@ -214,7 +214,7 @@
     const modal = document.createElement("div");
     modal.classList.add("gm-modal");
     const modalContent = document.createElement("div");
-    modalContent.classList.add("modal__content");
+    modalContent.classList.add("gm-modal__content");
 
     const title = document.createElement("h3");
     title.classList.add("modal__content__header");
@@ -238,20 +238,29 @@
       if (tasks.length !== 0) {
         const intro = document.createElement("p");
         intro.textContent = "You have the next planned tasks for today:\n";
-        modalContent.append(title, intro);
+        const taskContainer = document.createElement("div");
+        taskContainer.classList.add("task-container");
         tasks.forEach((task) => {
           {
-            const firstTxt = document.createElement("div");
-            firstTxt.textContent = `\t${task.title}`;
-
-            modalContent.append(firstTxt);
+            const taskElem = document.createElement("div");
+            taskElem.textContent = `\t${task.title}`;
+            taskContainer.append(taskElem);
           }
         });
+
+        const okButton = document.createElement("div");
+        okButton.classList.add("gm-modal__button");
+        okButton.textContent = "Ok";
+    
+        okButton.addEventListener("click", () => {
+          modal.style.display = "none";
+        });
+        modalContent.append(title, intro, taskContainer, okButton);
+
         // setting time for showing the good morning modal
         const currentDate = new Date().toLocaleDateString();
         const lastDateOfUsage = localStorage.getItem("lastDateOfUsage");
         if (lastDateOfUsage !== currentDate) {
-          console.log(localStorage.getItem("lastDateOfUsage"));
           localStorage.setItem("lastDateOfUsage", currentDate);
           modal.style.display = "flex";
         } else {
@@ -259,16 +268,6 @@
         }
       }
     });
-
-    const okButton = document.createElement("gm-modal__button");
-    okButton.classList.add("btn", "btn--ok");
-    okButton.textContent = "Ok";
-
-    okButton.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-
-    modalContent.append(okButton);
 
     modal.append(modalContent);
 
@@ -370,7 +369,6 @@
     calendar.addEventListener("change", (event) => {
       const selectedDate = event.target.value;
       // 2023-04-19
-      console.log(selectedDate);
     });
 
     //-----------------  BUTTONS ------------------------------
@@ -393,7 +391,6 @@
     addButton.textContent = "Add task";
 
     input.addEventListener("input", () => {
-      console.log(selectedTag);
       if (
         input.value.trim() !== "" &&
         calendar.value !== "" &&
@@ -409,7 +406,6 @@
     });
 
     tagContainer.addEventListener("click", (e) => {
-      console.log(selectedTag);
       if (
         selectedTag !== null &&
         calendar.value !== "" &&
@@ -425,7 +421,7 @@
     // ----------------- ADD NEW TASK ----------------------
     addButton.addEventListener("click", (e) => {
       const task = input.value.trim();
-      if (task !== "" && calendar.value !== "" && selectedTag !== "") {
+      if (task !== "" && calendar.value !== "" && selectedTag !== null) {
         postTask(task, selectedTag, calendar.value);
         location.reload();
       }
@@ -445,7 +441,6 @@
         });
 
         const updatedTask = await response.json();
-        console.log("Task updated:", updatedTask);
       } catch (error) {
         console.error(error);
       }
@@ -548,7 +543,6 @@
   function renderTasks(searchText) {
     const fetchTodoTasks = async () => {
       try {
-        console.log(searchText);
         const response = await fetch("http://localhost:3004/tasks");
         const tasks = await response.json();
         const todoTasks = tasks.filter((task) => !task.isCompleted);
@@ -585,7 +579,6 @@
             }
           );
           const updatedTask = await response.json();
-          console.log("Task updated:", updatedTask);
         } catch (error) {
           console.error(error);
         }
@@ -598,7 +591,6 @@
             { method: "delete" }
           );
           const updatedTask = await response.json();
-          console.log("Task updated:", updatedTask);
         } catch (error) {
           console.error(error);
         }
@@ -649,7 +641,6 @@
             }
           );
           const updatedTask = await response.json();
-          console.log("Task updated:", updatedTask);
         } catch (error) {
           console.error(error);
         }
