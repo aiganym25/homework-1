@@ -12,7 +12,7 @@
       "title": "new task to complete",
       "date": "2023-04-20",
       "tag": "work",
-      "isCompleted": false
+      "isCompleted": true
     },
     {
       "id": 11,
@@ -20,6 +20,13 @@
       "date": "2023-04-19",
       "tag": "work",
       "isCompleted": true
+    },
+    {
+      "title": "do washing",
+      "tag": "home",
+      "date": "2023-04-20",
+      "isCompleted": false,
+      "id": 12
     }
   ]
 }

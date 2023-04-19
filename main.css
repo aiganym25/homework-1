@@ -163,8 +163,8 @@ html {
 
 .gm-modal {
   display: none;
-  /* flex-direction: column;
-  justify-content: center; */
+  flex-direction: column;
+  justify-content: center;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -190,13 +190,14 @@ html {
 /* Modal Content/Box */
 .modal__content {
   position: relative;
-  margin: 5rem;
+  margin: 5rem auto;
   padding: 24px 32px;
   background-color: #fefefe;
   border-radius: 24px;
   border: 1px solid #888;
   min-height: 350px;
   max-height: 500px;
+  width: 600px;
 }
 
 .modal__content__header {

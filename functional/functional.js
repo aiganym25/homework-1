@@ -103,7 +103,8 @@
         date.textContent = formatDate(task.date);
 
         const tag_date = document.createElement("div");
-        tag_date.classList.add("flex");
+        tag_date.style.display = "flex";
+        tag_date.style.alignItems = "center";
         tag_date.append(tag, date);
         tag_date.style.marginTop = "10px";
         taskInfo.append(listItemTitle, tag_date);
@@ -185,7 +186,8 @@
         dateTitle.textContent = date;
 
         const tag_date = document.createElement("div");
-        tag_date.classList.add("flex");
+        tag_date.style.display = "flex";
+        tag_date.style.alignItems = "center";
         tag_date.append(tag, dateTitle);
         tag_date.style.marginTop = "9px";
         taskInfo.append(listItemTitle, tag_date);
