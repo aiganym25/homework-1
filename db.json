@@ -1,27 +1,6 @@
 {
   "tasks": [
     {
-      "title": "task 1",
-      "tag": "work",
-      "date": "2023-04-19",
-      "isCompleted": false,
-      "id": 1
-    },
-    {
-      "title": "task 2",
-      "tag": "health",
-      "date": "2023-04-18",
-      "isCompleted": false,
-      "id": 2
-    },
-    {
-      "title": "task 3",
-      "tag": "health",
-      "date": "2023-04-20",
-      "isCompleted": false,
-      "id": 3
-    },
-    {
       "id": 4,
       "title": "completed task 1",
       "date": "2023-04-17",
@@ -36,11 +15,25 @@
       "isCompleted": true
     },
     {
+      "id": 6,
       "title": "task 2",
-      "tag": "other",
       "date": "2023-04-19",
+      "tag": "other",
+      "isCompleted": false
+    },
+    {
+      "title": "new task",
+      "tag": "health",
+      "date": "2023-04-27",
       "isCompleted": false,
-      "id": 6
+      "id": 9
+    },
+    {
+      "title": "task for future",
+      "tag": "work",
+      "date": "2023-04-26",
+      "isCompleted": false,
+      "id": 11
     }
   ]
 }
