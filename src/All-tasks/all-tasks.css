@@ -57,17 +57,5 @@
   margin-bottom: 28px;
 }
 
-.task__list__item__delete-svg{
-  background-repeat: no-repeat;
-  object-fit: cover;
-  background-image: url("/src/assets/bin.svg");
-  
-}
 
-.task__list__item__delete {
-  width: 21px;
-  height: 21px;
-  cursor: pointer;
-  border-radius: 4px;
-}
 

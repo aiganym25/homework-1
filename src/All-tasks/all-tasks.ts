@@ -1,6 +1,7 @@
 import { TodoItem } from "../todo";
 import { formatDate } from "../format-date";
 import "./all-tasks.css";
+import Delete from "../assets/bin.svg";
 
 const fetchTodoTasks = async (searchText: string) => {
   const response = await fetch("http://localhost:3004/tasks");
@@ -91,8 +92,10 @@ export function renderTodoTasks(searchText: string) {
       tag_date.style.marginTop = "10px";
       taskInfo.append(listItemTitle, tag_date);
 
-      const deleteSvg = document.createElement("div");
-      deleteSvg.classList.add("task__list__item__delete", "task__list__item__delete-svg");
+      const deleteSvg = document.createElement("img");
+      deleteSvg.classList.add("task__list__item__delete-svg");
+      deleteSvg.src = Delete;    
+      deleteSvg.alt = "delete svg";  
 
 
       deleteSvg.addEventListener("click", () => {
