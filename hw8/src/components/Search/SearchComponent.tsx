@@ -1,11 +1,10 @@
-import { useCallback} from "react";
-import { SearchProps } from "../../interfaces/SearchProps";
+import { useCallback } from "react";
 import "./SearchComponent.css";
-
-export default function SearchComponent({
-  searchQuery,
-  onChangeText,
-}: SearchProps) {
+interface Props {
+  searchQuery: string;
+  onChangeText: (inputValue: string) => void;
+}
+export default function SearchComponent({ searchQuery, onChangeText }: Props) {
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       onChangeText(e.target.value);

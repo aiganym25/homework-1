@@ -20,28 +20,38 @@ function App() {
   const [searchText, setSearchText] = useState<string>("");
   const [allTaskList, setAllTaskList] = useState<Todo[]>([]);
   const [completedTaskList, setCompletedTaskList] = useState<Todo[]>([]);
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [todaysTasks, setTodaysTasks] = useState<Todo[]>([]);
+  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
+
+  const openNewTaskModal = () => {
+    setIsNewTaskModalOpen(true);
+  };
+
+  const closeNewTaskModal = () => {
+    setIsNewTaskModalOpen(false);
+  };
 
   const onTextChangeHandler = (inputValue: string) => {
     setSearchText(inputValue);
   };
-  const handleDeleteTask = async (task: Todo) => {
+
+  const handleDeleteTask = useCallback(async (task: Todo) => {
     await deleteTask(task);
     fetchTodoTasks();
     fetchCompletedTasks();
-  };
+  }, []);
 
-  const handleCompleteTask = async (task: Todo) => {
+  const handleCompleteTask = useCallback(async (task: Todo) => {
     await completeTask(task);
     fetchTodoTasks();
     fetchCompletedTasks();
-  };
-  const handleUndoCompletedTask = async (task: Todo) => {
+  }, []);
+
+  const handleUndoCompletedTask = useCallback(async (task: Todo) => {
     await undoCompleteTask(task);
     fetchCompletedTasks();
     fetchTodoTasks();
-  };
+  }, []);
 
   const fetchTodoTasks = useCallback(() => {
     getTasks(searchText).then((data) => setAllTaskList(data));
@@ -51,10 +61,6 @@ function App() {
     getCompletedTasks(searchText).then((data) => setCompletedTaskList(data));
   }, [searchText]);
 
-  const toggle = useCallback(() => {
-    setIsOpenModal(!isOpenModal);
-  }, [isOpenModal]);
-
   const getTodaysTasks = useCallback(() => {
     fetchTodaysTasks().then((data) => setTodaysTasks(data));
   }, []);
@@ -63,7 +69,7 @@ function App() {
     fetchTodoTasks();
     fetchCompletedTasks();
     getTodaysTasks();
-  }, [fetchTodoTasks, fetchCompletedTasks, getTodaysTasks, isOpenModal]);
+  }, [fetchTodoTasks, fetchCompletedTasks, getTodaysTasks, isNewTaskModalOpen]);
 
   return (
     <div className="container">
@@ -74,7 +80,11 @@ function App() {
           searchQuery={searchText}
           onChangeText={onTextChangeHandler}
         />
-        <NewTaskButtonComponent isOpenModal={isOpenModal} closeModal={toggle} />
+        <NewTaskButtonComponent
+          openNewTaskModal={openNewTaskModal}
+          closeNewTaskModal={closeNewTaskModal}
+          isNewTaskModalOpen={isNewTaskModalOpen}
+        />
       </div>
       <AllTasks
         allTaskList={allTaskList}

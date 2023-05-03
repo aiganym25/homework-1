@@ -1,22 +1,20 @@
 import NewTaskModal from "../Modals/NewTaskModal/NewTaskModal";
 import "./NewTaskButton.css";
 interface Props {
-  isOpenModal: boolean;
-  closeModal: (isOpen: boolean) => void;
+  isNewTaskModalOpen: boolean;
+  closeNewTaskModal: () => void;
+  openNewTaskModal: () => void;
 }
-export default function NewTaskButtonComponent({
-  isOpenModal,
-  closeModal,
-}: Props) {
+export default function NewTaskButtonComponent({ isNewTaskModalOpen, closeNewTaskModal, openNewTaskModal }: Props) {
   return (
     <>
-      <button
-        onClick={() => closeModal(isOpenModal)}
-        className="new-task-button"
-      >
+      <button onClick={() => openNewTaskModal()} className="new-task-button">
         + New Task
       </button>
-      <NewTaskModal isOpen={isOpenModal} toggle={closeModal} />
+      <NewTaskModal
+        isOpen={isNewTaskModalOpen}
+        closeNewTaskModal={closeNewTaskModal}
+      />
     </>
   );
 }

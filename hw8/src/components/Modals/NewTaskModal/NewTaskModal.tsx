@@ -1,43 +1,49 @@
-import { useState } from "react";
-import { NewTaskModalProps } from "../../../interfaces/NewTaskModalProps";
+import { useState, useCallback } from "react";
 import { addTask } from "../../../service/task";
 import { Tag } from "../../Tag/Tag";
 import "./NewTaskModal.css";
 
-export default function NewTaskModal(props: NewTaskModalProps) {
+interface Props {
+  isOpen: boolean;
+  closeNewTaskModal: () => void;
+}
+
+export default function NewTaskModal(props: Props) {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [selectedTag, setSelectedTag] = useState<string>("");
   const today = new Date().toISOString().substr(0, 10);
   const [date, setDate] = useState<string>(today);
 
-  const handleTagClick = (tag: string) => {
+  const handleTagClick = useCallback((tag: string) => {
     setSelectedTag(tag);
     if (newTaskTitle !== "") {
       const buttonAdd = document.querySelector(".btn--add-task")!;
       buttonAdd.classList.add("btn--add-task--accepted");
     }
-  };
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  }, [newTaskTitle]);
+
+  const handleTitleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(event.target.value);
-    if (newTaskTitle !== "" && selectedTag !== "") {
+    if (event.target.value !== "" && selectedTag !== "") {
       const buttonAdd = document.querySelector(".btn--add-task")!;
       buttonAdd.classList.add("btn--add-task--accepted");
     }
-  };
+  }, [selectedTag]);
 
-  const handleAddButtonClick = (): void => {
+  const handleAddButtonClick = useCallback(() => {
     if (newTaskTitle !== "" && selectedTag !== "") {
       addTask(newTaskTitle, selectedTag, date);
       setNewTaskTitle("");
       setSelectedTag("");
-      props.toggle(props.isOpen);
+      props.closeNewTaskModal();
     }
-  };
-  const handleCancelButtonClick = (): void => {
-    props.toggle(props.isOpen);
+  }, [date, newTaskTitle, props, selectedTag]);
+
+  const handleCancelButtonClick = useCallback(() => {
+    props.closeNewTaskModal();
     setNewTaskTitle("");
     setSelectedTag("");
-  };
+  }, [props]);
 
   return (
     <>
