@@ -1,0 +1,14 @@
+.new-task-button {
+  cursor: pointer;
+  background-color: rgba(60, 134, 244, 0.15);
+  padding: 16px 32px;
+  border: none;
+  font-size: 16px;
+  font-weight: 800;
+  color: #0053cf;
+  height: 52px;
+  white-space: nowrap;
+  border-radius: 12px;
+}
+
+
