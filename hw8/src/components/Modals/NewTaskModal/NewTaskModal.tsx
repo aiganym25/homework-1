@@ -16,7 +16,6 @@ export default function NewTaskModal(props: NewTaskModalProps) {
       const buttonAdd = document.querySelector(".btn--add-task")!;
       buttonAdd.classList.add("btn--add-task--accepted");
     }
-    console.log(selectedTag !== "");
   };
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewTaskTitle(event.target.value);

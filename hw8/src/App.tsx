@@ -51,26 +51,6 @@ function App() {
     getCompletedTasks(searchText).then((data) => setCompletedTaskList(data));
   }, [searchText]);
 
-  const [isShowedGM, setIsShowedGM] = useState(true);
-
-  const showGMrModal = useCallback(() => {
-    const currentDate: string = new Date().toLocaleDateString();
-    const lastDateOfUsage: string | null =
-      localStorage.getItem("lastDateOfUsage");
-      console.log( localStorage.getItem("lastDateOfUsage"));
-      console.log(currentDate);
-    if (lastDateOfUsage !== currentDate) {
-      localStorage.setItem("lastDateOfUsage", currentDate);
-      setIsShowedGM(false);
-    } else {
-      setIsShowedGM(true);
-    }
-  }, []);
-
-  const closeGMrModal = useCallback(() => {
-    setIsShowedGM(!isShowedGM);
-  }, []);
-
   const toggle = useCallback(() => {
     setIsOpenModal(!isOpenModal);
   }, [isOpenModal]);
@@ -82,17 +62,12 @@ function App() {
   useEffect(() => {
     fetchTodoTasks();
     fetchCompletedTasks();
-    showGMrModal();
     getTodaysTasks();
-  }, [fetchTodoTasks, fetchCompletedTasks, showGMrModal, getTodaysTasks]);
+  }, [fetchTodoTasks, fetchCompletedTasks, getTodaysTasks, isOpenModal]);
 
   return (
     <div className="container">
-      <GoodMorningModal
-        isShowedGM={!isShowedGM}
-        todaysTasks={todaysTasks}
-        onCloseGM={closeGMrModal}
-      />
+      <GoodMorningModal todaysTasks={todaysTasks} />
       <Header />
       <div className="flex">
         <SearchComponent

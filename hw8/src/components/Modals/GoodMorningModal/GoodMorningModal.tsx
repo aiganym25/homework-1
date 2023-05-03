@@ -1,16 +1,33 @@
+import { useCallback, useEffect, useState } from "react";
 import { Todo } from "../../../interfaces/Todo";
 import "./GoodMorningModal.css";
 
 interface Props {
-  isShowedGM: boolean;
   todaysTasks: Todo[];
-  onCloseGM: (isShowedGM: boolean) => void;
 }
-export default function GoodMorningModal({
-  todaysTasks,
-  isShowedGM,
-  onCloseGM,
-}: Props) {
+export default function GoodMorningModal({ todaysTasks }: Props) {
+  const [isShowedGM, setIsShowedGM] = useState(true);
+
+  const showGMrModal = useCallback(() => {
+    const currentDate: string = new Date().toLocaleDateString();
+    const lastDateOfUsage: string | null =
+      localStorage.getItem("lastDateOfUsage");
+    if (lastDateOfUsage !== currentDate) {
+      localStorage.setItem("lastDateOfUsage", currentDate);
+      setIsShowedGM(false);
+    } else {
+      setIsShowedGM(true);
+    }
+  }, []);
+
+  const closeGMrModal = useCallback(() => {
+    setIsShowedGM(true);
+  }, []);
+
+  useEffect(() => {
+    showGMrModal();
+  }, [showGMrModal]);
+
   return (
     <>
       {!isShowedGM && todaysTasks.length !== 0 && (
@@ -23,10 +40,7 @@ export default function GoodMorningModal({
                 <div key={task.id}>{task.title}</div>
               ))}
             </div>
-            <div
-              onClick={() => onCloseGM(isShowedGM)}
-              className="gm-modal__button"
-            >
+            <div onClick={() => closeGMrModal()} className="gm-modal__button">
               Ok
             </div>
           </div>

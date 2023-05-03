@@ -8,51 +8,23 @@
       "isCompleted": true
     },
     {
-      "id": 9,
-      "title": "new task",
-      "date": "2023-04-27",
-      "tag": "health",
+      "id": 21,
+      "title": "wash your hands",
+      "date": "2023-05-03",
+      "tag": "home",
       "isCompleted": true
     },
     {
-      "title": "new task for tomorrow",
-      "tag": "work",
-      "date": "2023-05-04",
-      "isCompleted": false,
-      "id": 18
-    },
-    {
-      "title": "new task",
-      "tag": "home",
-      "date": "2023-05-03",
-      "isCompleted": false,
-      "id": 19
-    },
-    {
-      "title": "new task",
-      "tag": "home",
-      "date": "2023-05-04",
-      "isCompleted": false,
-      "id": 20
-    },
-    {
-      "title": "sdfss",
-      "tag": "other",
-      "date": "2023-05-03",
-      "isCompleted": false,
-      "id": 21
-    },
-    {
-      "title": "sd",
-      "tag": "home",
-      "date": "2023-05-03",
+      "title": "do exercise",
+      "tag": "health",
+      "date": "2023-05-05",
       "isCompleted": false,
       "id": 22
     },
     {
-      "title": "wq",
-      "tag": "health",
-      "date": "2023-05-03",
+      "title": "get to work",
+      "tag": "work",
+      "date": "2023-05-07",
       "isCompleted": false,
       "id": 23
     }

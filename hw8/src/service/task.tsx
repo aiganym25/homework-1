@@ -44,7 +44,6 @@ export const getCompletedTasks = async (
 ): Promise<Todo[]> => {
   const response: Response = await fetch("http://localhost:3004/tasks");
   const tasks: Todo[] = await response.json();
-  console.log(tasks);
   const todoTasks = tasks.filter((task: Todo) => task.isCompleted);
   const filteredTasks =
     searchText !== ""
