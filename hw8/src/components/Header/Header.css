@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.header__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 36px;
+}
+.header__weather {
+  display: flex;
+  align-items: center;
+  padding: 10px 22px;
+}
+.header__weather__img {
+  margin-right: 23px;
+}
+.header__weather__temp {
+  margin-right: 80px;
+  font-weight: 800;
+  font-size: 18px;
+}
+.header__weather__city {
+  color: #838383;
+  font-weight: 500;
+  font-size: 18px;
+}
