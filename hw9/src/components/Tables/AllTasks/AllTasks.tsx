@@ -26,13 +26,6 @@ export default function AllTasks() {
     try {
       const response: Response = await fetch("http://localhost:3004/tasks");
       const tasksResponse: Todo[] = await response.json();
-      console.log(tagSelected.tag);
-      console.log(
-        "Filtered Task Tags:",
-        tasksResponse
-          .filter((task) => task.tag === tagSelected.tag.toLowerCase())
-          .map((task) => task.tag)
-      ); // Print tags of all tasks
 
       let filteredTasks = tasksResponse;
 
