@@ -4,16 +4,12 @@ import "./NewTaskModal.css";
 import { Tag } from "../../../Tag/Tag";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
-import { Todo } from "../../../interfaces/Todo";
+import { setIsOpenModal } from "../../../redux/modalSlice";
 import { addTask } from "../../../redux/tasksSlice";
-interface Props {
-  isOpen: boolean;
-  closeNewTaskModal: () => void;
-}
 
-export default function NewTaskModal(props: Props) {
+export default function NewTaskModal() {
   const tasks = useSelector((state: RootState) => state.tasks);
-
+  const isOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch = useDispatch();
 
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
@@ -24,10 +20,6 @@ export default function NewTaskModal(props: Props) {
   const handleTagClick = useCallback(
     (tag: string) => {
       setSelectedTag(tag);
-      if (newTaskTitle !== "") {
-        const buttonAdd = document.querySelector(".btn--add-task")!;
-        buttonAdd.classList.add("btn--add-task--accepted");
-      }
     },
     [newTaskTitle]
   );
@@ -35,10 +27,6 @@ export default function NewTaskModal(props: Props) {
   const handleTitleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setNewTaskTitle(event.target.value);
-      if (event.target.value !== "" && selectedTag !== "") {
-        const buttonAdd = document.querySelector(".btn--add-task")!;
-        buttonAdd.classList.add("btn--add-task--accepted");
-      }
     },
     [selectedTag]
   );
@@ -55,8 +43,7 @@ export default function NewTaskModal(props: Props) {
           isCompleted: false,
         }),
       });
-      setNewTaskTitle("");
-      setSelectedTag("");
+      dispatch(setIsOpenModal(false));
       dispatch(
         addTask({
           title: newTaskTitle,
@@ -65,21 +52,22 @@ export default function NewTaskModal(props: Props) {
           isCompleted: false,
         })
       );
-      props.closeNewTaskModal();
-    } catch (er) {
-      throw er;
+      setNewTaskTitle("");
+      setSelectedTag("");
+    } catch (error) {
+      console.error(error);
     }
   }
 
-  const handleCancelButtonClick = useCallback(() => {
-    props.closeNewTaskModal();
+  const handleCloseModal = () => {
+    dispatch(setIsOpenModal(false));
     setNewTaskTitle("");
     setSelectedTag("");
-  }, [props]);
+  };
 
   return (
     <>
-      {props.isOpen && (
+      {isOpen && (
         <div className="modal">
           <div className="modal__content">
             <h3 className="modal__content__header">Add New Task</h3>
@@ -129,15 +117,16 @@ export default function NewTaskModal(props: Props) {
             ></input>
 
             <div className="flex">
-              <button
-                onClick={handleCancelButtonClick}
-                className="btn btn--cancel"
-              >
+              <button onClick={handleCloseModal} className="btn btn--cancel">
                 Cancel
               </button>
               <button
                 onClick={handleAddButtonClick}
-                className="btn btn--add-task"
+                className={`btn btn--add-task ${
+                  newTaskTitle !== "" && selectedTag !== ""
+                    ? "btn--add-task--accepted"
+                    : ""
+                }`}
               >
                 Add Task
               </button>

@@ -24,7 +24,6 @@ export default function Header() {
         const { name } = location;
         const { temp_c, condition } = current;
         const { icon } = condition;
-        console.log({ temp_c, icon, name });
         dispatch(updateWeather({ temp_c, icon, name }));
       }
     } catch (error) {

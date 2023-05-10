@@ -8,18 +8,17 @@ import { RootState } from "../../../redux/reducers";
 import {
   completeTask,
   deleteTask,
-  fetchTasks,
+  getTasks,
   selectNotCompletedTasks,
 } from "../../../redux/tasksSlice";
 
 const deleteSVG = require("./assets/delete.svg") as string;
-console.log(deleteSVG);
 
 export default function AllTasks() {
   const dispatch = useDispatch();
 
-  const tasks = useSelector((state: RootState) => state.tasks);
   const searchText = useSelector((state: RootState) => state.search);
+  const tagSelected = useSelector((state: RootState) => state.tag);
 
   const notCompletedTasks = useSelector(selectNotCompletedTasks);
 
@@ -27,15 +26,42 @@ export default function AllTasks() {
     try {
       const response: Response = await fetch("http://localhost:3004/tasks");
       const tasksResponse: Todo[] = await response.json();
-      // const filteredTasks =
-      //   searchText !== ""
-      //     ? tasksResponse.filter((task: Todo) =>
-      //         task.title.toLowerCase().includes(searchText.toLowerCase())
-      //       )
-      //     : tasksResponse;
-      dispatch(fetchTasks(tasksResponse));
-    } catch (er) {
-      console.log(er);
+      console.log(tagSelected.tag);
+      console.log(
+        "Filtered Task Tags:",
+        tasksResponse
+          .filter((task) => task.tag === tagSelected.tag.toLowerCase())
+          .map((task) => task.tag)
+      ); // Print tags of all tasks
+
+      let filteredTasks = tasksResponse;
+
+      if (searchText.query !== "" && tagSelected.tag !== "All") {
+        // Filter by both searchText and tagSelected
+        filteredTasks = filteredTasks.filter(
+          (task: Todo) =>
+            task.title
+              .toLowerCase()
+              .includes(searchText.query?.toLowerCase() ?? "") &&
+            task.tag === tagSelected.tag.toLowerCase()
+        );
+      } else if (searchText.query !== "") {
+        // Filter by searchText only
+        filteredTasks = filteredTasks.filter((task: Todo) =>
+          task.title
+            .toLowerCase()
+            .includes(searchText.query?.toLowerCase() ?? "")
+        );
+      } else if (tagSelected.tag !== "All") {
+        // Filter by tagSelected only
+        filteredTasks = filteredTasks.filter(
+          (task) => task.tag === tagSelected.tag.toLowerCase()
+        );
+      }
+
+      dispatch(getTasks(filteredTasks));
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -52,7 +78,6 @@ export default function AllTasks() {
 
   async function handleCompleteTask(task: Todo) {
     try {
-      console.log("fdkf");
       const response = await fetch(`http://localhost:3004/tasks/${task.id}`, {
         method: "put",
         headers: { "Content-Type": "application/json" },
@@ -64,7 +89,6 @@ export default function AllTasks() {
           isCompleted: true,
         }),
       });
-      console.log(response.status);
       dispatch(completeTask(task.id));
     } catch (error) {
       console.error(error);
@@ -73,7 +97,7 @@ export default function AllTasks() {
 
   useEffect(() => {
     loadTasks();
-  }, [dispatch]);
+  }, [dispatch, searchText, tagSelected]);
 
   return (
     <div id="tasks">

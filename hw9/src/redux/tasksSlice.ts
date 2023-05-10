@@ -6,6 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import { Todo } from "../interfaces/Todo";
 import { RootState } from "./reducers";
+let nextTaskId = 1;
 
 const initialTasksState: Todo[] = [];
 
@@ -13,12 +14,21 @@ export const tasksSlice = createSlice({
   name: "tasks",
   initialState: initialTasksState,
   reducers: {
-    fetchTasks: (state, action) => {
-      return action.payload;
+    getTasks: (state, action) => {
+      return action.payload.map((task: Todo) => {
+        if (task.id >= nextTaskId) {
+          nextTaskId = task.id + 1;
+        }
+        return task;
+      });
     },
-
     addTask: (state, action) => {
-      state.push(action.payload);
+      const newTask = {
+        ...action.payload,
+        id: nextTaskId,
+      };
+      nextTaskId++;
+      state.push(newTask);
     },
     editTask: (state, action) => {
       const { id } = action.payload;
@@ -58,11 +68,6 @@ export const selectCompletedTasks = createSelector(
   (tasks) => tasks.filter((task) => task.isCompleted)
 );
 
-export const {
-  addTask,
-  fetchTasks,
-  deleteTask,
-  completeTask,
-  undoCompleteTask,
-} = tasksSlice.actions;
+export const { addTask, getTasks, deleteTask, completeTask, undoCompleteTask } =
+  tasksSlice.actions;
 export default tasksSlice.reducer;

@@ -9,6 +9,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <Route path="/tasks" element={<App />}></Route>
       <Route path="/tasks/:tag" element={<App />}></Route>
       <Route path="/tasks/?q=:query" element={<App />}></Route>
+      <Route path="/tasks/:tag" element={<App />} />
     </Routes>
   </BrowserRouter>
 );

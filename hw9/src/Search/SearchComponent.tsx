@@ -1,43 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-// import { setSearchQuery } from "../../redux/searchSlice";
-import "./SearchComponent.css";
-import { RootState } from "../redux/reducers";
+import { useDispatch } from "react-redux";
+import { useParams, useLocation } from "react-router-dom";
 import { setSearchQuery } from "../redux/searchSlice";
+import "./SearchComponent.css";
 
-interface Props {
-  onChangeText: (inputValue: string) => void;
-}
-
-export default function SearchComponent({ onChangeText }: Props) {
+export default function SearchComponent() {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const searchQuery = useSelector((state: RootState) => state.search);
   const [queryString, setQueryString] = useState("");
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
+    const searchParams = new URLSearchParams(location.search); // from url it sets the searchQUERY
     const query = searchParams.get("q");
     setQueryString(query || "");
+    // console.log(query)
+    dispatch(setSearchQuery(query));
   }, [location]);
 
   useEffect(() => {
-    // setQueryString(searchQuery);
-  }, [searchQuery]);
-
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newQuery = e.target.value;
-      setQueryString(newQuery);
-      dispatch(setSearchQuery(newQuery));
-      onChangeText(newQuery);
-    },
-    [dispatch, onChangeText]
-  );
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams();
+    const searchParams = new URLSearchParams();  // from INPUT it sets the searchQUERY
     if (queryString) {
       searchParams.set("q", queryString);
     }
@@ -46,6 +28,15 @@ export default function SearchComponent({ onChangeText }: Props) {
     }`;
     window.history.replaceState(null, "", newPath);
   }, [queryString]);
+
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newQuery = e.target.value;
+      setQueryString(newQuery);
+      dispatch(setSearchQuery(newQuery));
+    },
+    [dispatch]
+  );
 
   return (
     <input

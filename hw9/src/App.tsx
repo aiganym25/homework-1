@@ -19,13 +19,10 @@ import {
 import { useParams } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
+import TagsSelector from "./components/Tags/TagsSelector";
 
 export default function App() {
-  const [searchText, setSearchText] = useState<string>("");
-  const [allTaskList, setAllTaskList] = useState<Todo[]>([]);
-  const [completedTaskList, setCompletedTaskList] = useState<Todo[]>([]);
   const [todaysTasks, setTodaysTasks] = useState<Todo[]>([]);
-  const [isNewTaskModalOpen, setIsNewTaskModalOpen] = useState(false);
 
   const param = useParams();
   // console.log(param.taskTitle);
@@ -33,25 +30,13 @@ export default function App() {
   const tag = param.tag ?? "";
   // console.log(tag);
 
-  const openNewTaskModal = () => {
-    setIsNewTaskModalOpen(true);
-  };
-
-  const closeNewTaskModal = () => {
-    setIsNewTaskModalOpen(false);
-  };
-
-  const onTextChangeHandler = (inputValue: string) => {
-    setSearchText(inputValue);
-  };
-
   const getTodaysTasks = useCallback(() => {
     fetchTodaysTasks().then((data) => setTodaysTasks(data));
   }, []);
 
   useEffect(() => {
     getTodaysTasks();
-  }, [getTodaysTasks, isNewTaskModalOpen]);
+  }, [getTodaysTasks]);
 
   return (
     <Provider store={store}>
@@ -59,13 +44,10 @@ export default function App() {
         <GoodMorningModal todaysTasks={todaysTasks} />
         <Header />
         <div className="flex">
-          <SearchComponent onChangeText={onTextChangeHandler} />
-          <NewTaskButtonComponent
-            openNewTaskModal={openNewTaskModal}
-            closeNewTaskModal={closeNewTaskModal}
-            isNewTaskModalOpen={isNewTaskModalOpen}
-          />
+          <SearchComponent />
+          <NewTaskButtonComponent />
         </div>
+        <TagsSelector/>
         <AllTasks />
         <CompletedTasks />
       </div>
