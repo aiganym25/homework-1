@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useCallback } from "react";
 import "./NewTaskModal.css";
 import { Tag } from "../../../Tag/Tag";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
-import { setIsOpenModal } from "../../../redux/modalSlice";
+import { setIsOpenModal, setTaskId } from "../../../redux/modalSlice";
 import { addTask } from "../../../redux/tasksSlice";
+import { addNewTaskThunk, editTaskThunk } from "../../../redux/tasksThunks";
 
 export default function NewTaskModal() {
   const tasks = useSelector((state: RootState) => state.tasks);
   const isOpen = useSelector((state: RootState) => state.modal.isOpen);
+  const modalType = useSelector((state: RootState) => state.modal.type);
+  const taskId = useSelector((state: RootState) => state.modal.taskId);
+
   const dispatch = useDispatch();
 
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
@@ -32,31 +36,14 @@ export default function NewTaskModal() {
   );
 
   async function handleAddButtonClick() {
-    try {
-      await fetch(`http://localhost:3004/tasks`, {
-        method: "post",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: newTaskTitle,
-          tag: selectedTag,
-          date: date,
-          isCompleted: false,
-        }),
-      });
-      dispatch(setIsOpenModal(false));
-      dispatch(
-        addTask({
-          title: newTaskTitle,
-          tag: selectedTag,
-          date: date,
-          isCompleted: false,
-        })
-      );
-      setNewTaskTitle("");
-      setSelectedTag("");
-    } catch (error) {
-      console.error(error);
+    if (modalType === "newTask") {
+      await addNewTaskThunk(newTaskTitle, selectedTag, date, dispatch);
+    } else {
+      await editTaskThunk(newTaskTitle, selectedTag, date, taskId, dispatch);
     }
+    setNewTaskTitle("");
+    setSelectedTag("");
+    handleCloseModal();
   }
 
   const handleCloseModal = () => {
@@ -65,12 +52,14 @@ export default function NewTaskModal() {
     setSelectedTag("");
   };
 
+  const header = modalType === "newTask" ? "Add New Task" : "Edit the task";
+
   return (
     <>
       {isOpen && (
         <div className="modal">
           <div className="modal__content">
-            <h3 className="modal__content__header">Add New Task</h3>
+            <h3 className="modal__content__header">{header}</h3>
             <input
               className="modal__content__task-input"
               type="text"
@@ -121,7 +110,11 @@ export default function NewTaskModal() {
                 Cancel
               </button>
               <button
-                onClick={handleAddButtonClick}
+                onClick={() => {
+                  if (newTaskTitle !== "" && selectedTag !== "") {
+                    handleAddButtonClick();
+                  }
+                }}
                 className={`btn btn--add-task ${
                   newTaskTitle !== "" && selectedTag !== ""
                     ? "btn--add-task--accepted"

@@ -1,11 +1,29 @@
 #tasks {
   width: 70%;
 }
-.flex {
+.inline {
+  display: flex;
+   /* justify-content: space-between; 
+  align-items: center; */
+  width: 100%;
+}
+.space-between{
   display: flex;
   justify-content: space-between;
-  align-items: center;
   width: 100%;
+}
+.icons {
+  display: flex;
+}
+
+.icon-left {
+  margin-right: 10px;
+  cursor: pointer;
+}
+.icon-right {
+  margin-left: auto;
+  margin-bottom: 30px;
+  cursor: pointer;
 }
 .checkbox {
   width: 21px;
@@ -16,7 +34,6 @@
   margin-right: 20px;
 }
 .checkbox--checked {
-  /* background-image: url("/src/assets/checked-checkbox.svg"); */
   background-repeat: no-repeat;
   object-fit: cover;
   background-color: #d3d3d3;
@@ -33,12 +50,6 @@
   color: #838383;
   font-weight: 500;
   font-size: 12px;
-}
-
-.task__list__item__delete-svg {
-  margin-left: auto;
-  margin-bottom: 30px;
-  cursor: pointer;
 }
 
 .tasks__header {

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getTbilisiWeatherInfo } from "../../service/weather";
 import { WeatherInfo } from "../../interfaces/Weather";
 import "./Header.css";
 import React from "react";
 import { updateWeather } from "../../redux/weatherSlice";
 import { RootState } from "../../redux/reducers";
+import { config } from "../../config";
 
 export default function Header() {
   const dispatch = useDispatch();
@@ -13,10 +13,8 @@ export default function Header() {
 
   async function loadWeather() {
     try {
-      const apiKey: string = "1a6debdafdde4b7d952200620231804";
-
       const response = await fetch(
-        `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=Tbilisi&aqi=yes`
+        `http://api.weatherapi.com/v1/current.json?key=${config.apiKey}&q=Tbilisi&aqi=yes`
       );
       if (response.ok) {
         const data: WeatherInfo = await response.json();

@@ -8,27 +8,16 @@ import { Todo } from "./interfaces/Todo";
 import SearchComponent from "./Search/SearchComponent";
 import Header from "./components/Header/Header";
 
-import {
-  completeTask,
-  deleteTask,
-  fetchTodaysTasks,
-  getCompletedTasks,
-  getTasks,
-  undoCompleteTask,
-} from "./service/task";
+import { fetchTodaysTasks } from "./service/task";
 import { useParams } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store } from "./redux/store";
 import TagsSelector from "./components/Tags/TagsSelector";
+import { RootState } from "./redux/reducers";
 
 export default function App() {
   const [todaysTasks, setTodaysTasks] = useState<Todo[]>([]);
-
-  const param = useParams();
-  // console.log(param.taskTitle);
-
-  const tag = param.tag ?? "";
-  // console.log(tag);
+  const isOpen = useSelector((state: RootState) => state.modal.isOpen);
 
   const getTodaysTasks = useCallback(() => {
     fetchTodaysTasks().then((data) => setTodaysTasks(data));
@@ -36,21 +25,19 @@ export default function App() {
 
   useEffect(() => {
     getTodaysTasks();
-  }, [getTodaysTasks]);
+  }, [getTodaysTasks, isOpen]);
 
   return (
-    <Provider store={store}>
-      <div className="container">
-        <GoodMorningModal todaysTasks={todaysTasks} />
-        <Header />
-        <div className="flex">
-          <SearchComponent />
-          <NewTaskButtonComponent />
-        </div>
-        <TagsSelector/>
-        <AllTasks />
-        <CompletedTasks />
+    <div className="container">
+      <GoodMorningModal todaysTasks={todaysTasks} />
+      <Header />
+      <div className="flex">
+        <SearchComponent />
+        <NewTaskButtonComponent />
       </div>
-    </Provider>
+      <TagsSelector />
+      <AllTasks />
+      <CompletedTasks />
+    </div>
   );
 }

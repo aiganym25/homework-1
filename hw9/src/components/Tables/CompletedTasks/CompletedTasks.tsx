@@ -8,29 +8,15 @@ import {
   undoCompleteTask,
 } from "../../../redux/tasksSlice";
 import { useDispatch, useSelector } from "react-redux";
+import CompletedCheckboxIcon from "./assets/CompletedCheckboxIcon";
+import { undoCompletedTaskThunk } from "../../../redux/tasksThunks";
 
 export default function CompletedTasks() {
   const notCompletedTasks = useSelector(selectCompletedTasks);
   const dispatch = useDispatch();
 
   async function handleUndoCompletedTask(task: Todo) {
-    const undoCompletedItem: Todo = {
-      id: task.id,
-      title: task.title,
-      date: task.date,
-      tag: task.tag,
-      isCompleted: false,
-    };
-    try {
-      await fetch(`http://localhost:3004/tasks/${task.id}`, {
-        method: "put",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(undoCompletedItem),
-      });
-      dispatch(undoCompleteTask(task.id));
-    } catch (error) {
-      console.error(error);
-    }
+    undoCompletedTaskThunk(task, dispatch);
   }
 
   return (
@@ -40,10 +26,7 @@ export default function CompletedTasks() {
         {notCompletedTasks &&
           notCompletedTasks.map((task: Todo) => (
             <li className="completed-task__list__item" key={task.id}>
-              <img
-                className="checkded-checkbox"
-                src="/assets/completedCheckbox.svg"
-                alt="delete svg"
+              <CompletedCheckboxIcon
                 onClick={() => handleUndoCompletedTask(task)}
               />
               <div className="completed-task__list__item-info">

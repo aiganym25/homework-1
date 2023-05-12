@@ -1,6 +1,4 @@
 import {
-  createAsyncThunk,
-  createReducer,
   createSelector,
   createSlice,
 } from "@reduxjs/toolkit";
@@ -68,6 +66,6 @@ export const selectCompletedTasks = createSelector(
   (tasks) => tasks.filter((task) => task.isCompleted)
 );
 
-export const { addTask, getTasks, deleteTask, completeTask, undoCompleteTask } =
+export const { editTask, addTask, getTasks, deleteTask, completeTask, undoCompleteTask } =
   tasksSlice.actions;
 export default tasksSlice.reducer;

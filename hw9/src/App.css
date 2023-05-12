@@ -9,9 +9,3 @@
   padding: 0 4rem;
   margin: 2rem;
 }
-
-.flex {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
