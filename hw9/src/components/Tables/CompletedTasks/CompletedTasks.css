@@ -1,0 +1,72 @@
+#tasks {
+  width: 70%;
+}
+.flex {
+  display: flex;
+  width: 100%;
+}
+.checkded-checkbox {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 20px;
+  border: 2px solid #d3d3d3;
+  width: 21px;
+  height: 21px;
+  background-color: #d3d3d3;
+}
+
+.completed-task__list__item-info__title {
+  font-size: 18px;
+  font-weight: 400;
+  color: #838383;
+}
+
+.completed-task__list__item-info__date {
+  color: #838383;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.completed-task__list__item__delete-svg {
+  margin-left: auto;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+
+.completed-tasks__header {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: Nunito;
+  line-height: 32px;
+  padding-bottom: 16px;
+  margin-top: 42px;
+}
+
+.completed-task__list {
+  list-style-type: none;
+  color: #838383;
+}
+
+.completed-task__list__item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.completed-task__list__item {
+  display: flex;
+  margin-bottom: 28px;
+}
+.completed-task__list__item-info__paddingTop {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.completed-tag {
+  cursor: pointer;
+  padding: 2px 8px;
+  margin-right: 12px;
+  border-radius: 6px;
+  color: #838383;
+  background: #f5f5f5;
+}

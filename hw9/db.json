@@ -1,0 +1,53 @@
+{
+  "tasks": [
+    {
+      "id": 4,
+      "title": "completed task 1",
+      "date": "2023-04-17",
+      "tag": "health",
+      "isCompleted": false
+    },
+    {
+      "id": 21,
+      "title": "wash your hands",
+      "date": "2023-05-03",
+      "tag": "home",
+      "isCompleted": true
+    },
+    {
+      "id": 23,
+      "title": "get to work",
+      "date": "2023-05-07",
+      "tag": "work",
+      "isCompleted": true
+    },
+    {
+      "id": 27,
+      "title": "wash your brain",
+      "date": "2023-05-10",
+      "tag": "other",
+      "isCompleted": true
+    },
+    {
+      "id": 29,
+      "title": "new task",
+      "date": "2023-05-10",
+      "tag": "home",
+      "isCompleted": false
+    },
+    {
+      "id": 30,
+      "title": "go to plane",
+      "date": "2023-05-12",
+      "tag": "work",
+      "isCompleted": false
+    },
+    {
+      "id": 32,
+      "title": "write a poem",
+      "tag": "other",
+      "date": "2023-05-15",
+      "isCompleted": false
+    }
+  ]
+}
